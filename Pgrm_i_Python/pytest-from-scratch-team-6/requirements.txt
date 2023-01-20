@@ -1,0 +1,4 @@
+Pytest
+Tox
+Coverage
+Flake8
