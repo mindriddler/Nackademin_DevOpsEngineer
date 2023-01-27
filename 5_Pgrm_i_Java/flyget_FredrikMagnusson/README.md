@@ -29,22 +29,6 @@ This project is seat reservation system. It includes the following features:
 * A method that generates already booked seats for a more accurate real life situation
 
 # Notes
-* Before running the program, go to the Utilities class and change the file path to your desired file path for saving and loading bookings and file path for the passenger info file.
-  * Windows example:
-    * ```bash
-      public static final String BOOKINGS_FILE_PATH = "C:\\Users\\Fredrik\\Documents\\GitHub\\flyget_FredrikMagnusson\\bookings\\bookings.data";
-      public static final String PASSENGER_INFO_FILE_PATH = "C:\\Users\\Fredrik\\Documents\\GitHub\\flyget_FredrikMagnusson\\bookings\\passenger_info.txt";    
-      ```
-  * Linux example:
-    * ```bash
-      public static final String BOOKINGS_FILE_PATH = "/home/fredrik/Documents/GitHub/flyget_FredrikMagnusson/bookings/bookings.data";
-      public static final String PASSENGER_INFO_FILE_PATH = "/home/fredrik/Documents/GitHub/flyget_FredrikMagnusson/bookings/passenger_info.txt";    
-      ```
-  * Mac example:
-    * ```bash
-      public static final String BOOKINGS_FILE_PATH = "/Users/fredrik/Documents/GitHub/flyget_FredrikMagnusson/bookings/bookings.data";
-      public static final String PASSENGER_INFO_FILE_PATH = "/Users/fredrik/Documents/GitHub/flyget_FredrikMagnusson/bookings/passenger_info.txt";    
-      ```
 * The program uses ANSI escape codes to print the seating plan in color.
 * The program uses the Scanner class to read input from the user, so make sure to enter the input in the correct format as prompted by the program.
 * The program uses the LocalDate class to handle dates, so make sure to enter the birthdate in the format yyyy-MM-dd.
