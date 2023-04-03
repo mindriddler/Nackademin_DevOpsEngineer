@@ -60,10 +60,11 @@ maths_without_external_libs() {
 	printf -v percent_5xx "%.2f" "$percent_5xx_integer.$percent_5xx_decimal"
 }
 
-if [[ $1 =~ "gzip" && ($2 == "code" || $2 == "url" || $2 == "downloaded") ]]; then
+if [[ $(file -b "$1") =~ "gzip" && ($2 == "code" || $2 == "url" || $2 == "downloaded") ]]; then
 	while [[ $# -gt 0 ]]; do
-		case $1 in
+		case $2 in
 		code)
+			echo "Working on collecting the HTTP/HTTPS codes. Please wait."
 			num_of_2xx_codes=0
 			num_of_5xx_codes=0
 			left_over_codes=0
@@ -76,28 +77,32 @@ if [[ $1 =~ "gzip" && ($2 == "code" || $2 == "url" || $2 == "downloaded") ]]; th
 				else
 					((left_over_codes += 1))
 				fi
-			done <~/logs.gzip
+			done < <(zcat ~/logs)
 			#maths_bc
 			#maths_python
 			maths_without_external_libs
 			print_message
 			;;
 		url)
-			rm ~/.urls.txt
+			echo -e "\nWorking on getting the TOP5 urls. Please wait."
+			rm ~/.urls.txt 2>/dev/null
+			touch ~/.urls.txt
 			while read line; do
 				echo "$line" | cut -d ' ' -f7 >> ~/.urls.txt
-			done <~/logs.gzip
+			done < <(zcat ~/logs)
 			top_urls=$(cat ~/.urls.txt | sort | uniq -c | sort -r | head -n5)
 			echo "Top URLS: "
 			echo "$top_urls"
+			rm ~/.urls.txt
 			;;
 		downloaded)
+			echo -e "\nWorking on calculating the download. Please wait."
 			total_bytes=0
 			while read line; do
 				bytes=$(echo "$line" | cut -d ' ' -f10)
 				bytes_in_int=$(expr $bytes + 0)
 				total_bytes=$(($total_bytes + $bytes_in_int))
-			done <~/logs.gzip
+			done < <(zcat ~/logs)
 			#echo "$total_bytes"
 			converted=$(convert_bytes $total_bytes)
 			echo "Downloaded:"
