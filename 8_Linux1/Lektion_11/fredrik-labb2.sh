@@ -58,13 +58,14 @@ maths_without_external_libs() {
 	percent_5xx_decimal=$((percent_5xx % factor))
 	percent_5xx_integer=$((percent_5xx / factor))
 	printf -v percent_5xx "%.2f" "$percent_5xx_integer.$percent_5xx_decimal"
-}
+} 2>/dev/null
 
-if [[ $(file -b "$1") =~ "gzip" && ($2 == "code" || $2 == "url" || $2 == "downloaded") ]]; then
+if [[ $(file "$1" | grep "gzip") && ( "$2" == "code" || "$2" == "url" || "$2" == "downloaded" ) ]]; then
+	file=$1
 	while [[ $# -gt 0 ]]; do
 		case $2 in
 		code)
-			echo "Working on collecting the HTTP/HTTPS codes. Please wait."
+			echo -e "\nWorking on collecting the HTTP/HTTPS codes. Please wait."
 			num_of_2xx_codes=0
 			num_of_5xx_codes=0
 			left_over_codes=0
@@ -77,7 +78,7 @@ if [[ $(file -b "$1") =~ "gzip" && ($2 == "code" || $2 == "url" || $2 == "downlo
 				else
 					((left_over_codes += 1))
 				fi
-			done < <(zcat ~/logs)
+			done < <(zcat $file)
 			#maths_bc
 			#maths_python
 			maths_without_external_libs
@@ -89,7 +90,7 @@ if [[ $(file -b "$1") =~ "gzip" && ($2 == "code" || $2 == "url" || $2 == "downlo
 			touch ~/.urls.txt
 			while read line; do
 				echo "$line" | cut -d ' ' -f7 >> ~/.urls.txt
-			done < <(zcat ~/logs)
+			done < <(zcat $file)
 			top_urls=$(cat ~/.urls.txt | sort | uniq -c | sort -r | head -n5)
 			echo "Top URLS: "
 			echo "$top_urls"
@@ -102,7 +103,7 @@ if [[ $(file -b "$1") =~ "gzip" && ($2 == "code" || $2 == "url" || $2 == "downlo
 				bytes=$(echo "$line" | cut -d ' ' -f10)
 				bytes_in_int=$(expr $bytes + 0)
 				total_bytes=$(($total_bytes + $bytes_in_int))
-			done < <(zcat ~/logs)
+			done < <(zcat $file)
 			#echo "$total_bytes"
 			converted=$(convert_bytes $total_bytes)
 			echo "Downloaded:"
