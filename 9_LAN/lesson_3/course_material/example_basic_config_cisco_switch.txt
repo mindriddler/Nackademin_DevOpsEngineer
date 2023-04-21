@@ -1,0 +1,49 @@
+Switch>
+
+Switch>enable "gör att du kommer in läget som du har access till allt"
+
+Switch#configure terminal 
+
+"konfigureringsläge"
+
+Switch(config)#hostname Buffalo 
+
+"namn på switchen"
+
+Buffalo(config)#no logging console 
+
+"gör att man slipper jobbiga syslog meddelanden i konsolen"
+
+Buffalo(config)#no ip domain-lookup 
+
+"gör att om man råkar skriva in felaktig kommando så letar den inte efter dns...translating 255.255....
+
+Buffalo(config)#banner motd #This is the Buffalo Switch. Authorized Access Only#
+
+"visar ett meddelande vid inloggning"
+
+Buffalo(config)#enable secret erik
+
+"lösenordet erik för enable mode (högsta kryptering)
+
+Buffalo(config)#line console 0
+
+Buffalo(config-line)#password class
+
+Buffalo(config-line)#login
+
+"dessa kommandon tilldelar lösenordet class för konsolporten (in band)"
+
+Buffalo(config-line)#line vty 0 15
+
+Buffalo(config-line)#password cisco
+
+Buffalo(config-line)#login
+
+"dessa kommandon tilldelar lösenordet cisco vid (out of band)"
+
+
+
+Buffalo(config)#service password-encryption
+
+"kommando som krypterar alla lösenord i klartext i konfig mode!

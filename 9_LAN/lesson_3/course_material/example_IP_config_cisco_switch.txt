@@ -1,0 +1,7 @@
+Buffalo(config)#interface vlan 1
+
+Buffalo(config-if)#ip address 192.168.1.100 255.255.255.0
+
+Buffalo(config-if)#no shutdown
+
+"tilldelar ip adress för switchen för ex. telnet, ssh, http, SNMP med mera. Aktiverar VLAN 1 som är native VLAN, d.v.s. alla portar är kopplade till detta VLAN default"

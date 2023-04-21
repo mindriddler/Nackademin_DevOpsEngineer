@@ -1,0 +1,28 @@
+Utgå från nätet:
+
+10.10.10.0/24
+
+LAN1 ska ha max 30 användare (Host IP) /27
+10.10.10.0-10.10.10.31/27
+
+LAN2 ska ha max 14 användare (Host IP) /28
+10.10.10.32-10.10.10.47/28
+
+WAN ska ha max 2 användare (Host IP) /30
+10.10.10.48-10.10.10.51/30
+
+Börja subnetta LAN1, därefter LAN2 och sista WAN, för att subnetta optimalt.
+
+1) Konfigurera två stycken routers med basic configuration samt RIP mellan routrar. Kolla presentation  (denna vecka) hur RIP konfigureras.
+
+2) Använd /30 mask mellan routers (WAN). Anslut datorer på vardera  LAN och testa routing funktionalitet med ping. 
+
+3) Kolla även att alla nätverk LAN1, WAN, LAN2 finns i routing tabellen i routers, med kommandot "show ip route". 
+
+4) Koppla till en switch som har SSH konfigurerat och testa SSH från ena LAN till andra LAN där switchen är ansluten.
+
+5) Konfigurera DHCP på vardera router (kolla presentation  denna vecka om DHCP). Verifiera att bägge PC ansluts med DHCP, till respektive LAN.
+
+6) Testa även static routing mellan routers, då måste RIP tas bort med "no ip rip" på vardera router. Man kan behålla RIP konfig kvar då static har AD 1 och RIP AD 120.
+
+Lycka till!
