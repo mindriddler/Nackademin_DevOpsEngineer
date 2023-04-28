@@ -1,0 +1,38 @@
+Här ska du konfigurera OSPF i varje router enligt nedan, du måste även konfigurera datorerna med IP. Verifiera end-to-end kommunikation mellan datorerna. Skicka in för rättning.
+
+Router1
+
+Router>enable
+Router#conf t
+Router(config)#int fa0/0
+Router(config-if)#ip address 172.16.10.254 255.255.255.0
+Router(config-if)#no shut
+
+Router(config)#int fa0/1
+Router(config-if)#ip address 172.16.20.1 255.255.255.252
+Router(config-if)#no shut
+Router(config-if)#exit
+
+Router(config)#router ospf 1
+Router(config-router)#network 172.16.10.0 0.0.0.255 area 0
+Router(config-router)#network 172.16.20.0 0.0.0.3 area 0
+
+
+
+Router2
+
+Router>enable
+Router#conf t
+Router(config)#int fa0/0
+Router(config-if)#ip address 172.16.30.254 255.255.255.0
+Router(config-if)#no shut
+
+Router(config-if)#int fa0/1
+Router(config-if)#ip address 172.16.20.2 255.255.255.252
+Router(config-if)#no shut
+
+Router(config-if)#router ospf 1
+Router(config-router)#network 172.16.20.0 0.0.0.3 area 0
+Router(config-router)#network 172.16.30.0 0.0.0.255 area 0
+
+Glöm inte att sätta IP i datorerna också och testa att dessa kan pinga varandra.
