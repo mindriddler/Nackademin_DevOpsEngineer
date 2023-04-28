@@ -1,0 +1,38 @@
+Router>enable
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#int g0/0
+Router(config-if)#ip address 192.168.3.1 255.255.255.0
+Router(config-if)#ip nat inside
+Router(config-if)#int g0/1
+Router(config-if)#ip address 192.168.2.1 255.255.255.0
+Router(config-if)#ip nat inside
+Router(config-if)#int g0/2
+Router(config-if)#ip address 172.16.2.1 255.255.255.0
+Router(config-if)#ip nat outside
+Router(config-if)#exit
+Router(config)#ip nat inside source list 1 interface g0/2 overload
+Router(config)#access-list 1 permit 192.168.2.0 0.0.0.255
+Router(config)#access-list 1 permit 192.168.3.0 0.0.0.255
+Router(config)#^Z
+Router#
+
+
+Router#show ip nat statistics
+Total translations: 0 (0 static, 0 dynamic, 0 extended)
+Outside Interfaces: GigabitEthernet0/2
+Inside Interfaces: GigabitEthernet0/0 , GigabitEthernet0/1
+Hits: 7  Misses: 8
+Expired translations: 8
+Dynamic mappings:
+Router#
+
+
+Router#show ip nat statistics
+Total translations: 0 (0 static, 0 dynamic, 0 extended)
+Outside Interfaces: GigabitEthernet0/2
+Inside Interfaces: GigabitEthernet0/0 , GigabitEthernet0/1
+Hits: 7  Misses: 8
+Expired translations: 8
+Dynamic mappings:
+Router#
