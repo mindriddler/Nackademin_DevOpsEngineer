@@ -1,0 +1,11 @@
+https://youtu.be/FpKLc56VFc8 (Om VARFÖR man bör köra IPSEC) (6:03)
+https://youtu.be/-JrXllTuI2s (What is IPSEC? - Om Tunnel mode) (3:01)
+https://youtu.be/15amNny_kKI (IPSEC VPN fundamentals) (15 min)
+https://youtu.be/y1RjkO5K0eo (What is Cryptografic suites?) (2:32)
+https://youtu.be/iRQPfISsG9k (Hacking your Home: How safe is the Internet of Things?)(12:31)
+
+https://en.wikipedia.org/wiki/IPsec#Algorithms (Vilka kryptoalgoritmer som stöds av IPSEC)
+
+
+What is Proxy firewalls? (3:22) https://youtu.be/cktBGa88xTU
+What is DPI? (19:35) https://youtu.be/oZ2HC3nIVvY
