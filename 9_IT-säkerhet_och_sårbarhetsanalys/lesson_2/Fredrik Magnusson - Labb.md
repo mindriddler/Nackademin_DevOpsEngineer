@@ -380,7 +380,7 @@ I min bild ovan kan man se aktiviteten på portarna 3389(closed) och 1(filtered)
 
 Jag har även bifogat wireshark capture filen på studentportalen
 
-frame 41, 42, 55 & 56 är kopplade till closed och filtered
+frame 35, 38, 50 & 51 är kopplade till closed och filtered
 
 ------------
 
