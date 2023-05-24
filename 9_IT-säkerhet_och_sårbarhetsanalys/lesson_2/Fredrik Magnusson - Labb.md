@@ -17,7 +17,7 @@
 - [Labb del 2 - VG](#labb-del-2---vg)
   - [Port 3389](#port-3389)
   - [Port 1](#port-1)
-  - [Vad är skillnaden på closed och filtered?](#vad-är-skillnaden-på-closed-och-filtered)
+  - [Vad är skillnaden på "closed" och "filtered"?](#vad-är-skillnaden-på-closed-och-filtered)
 
 # Labb del 1 - G
 ```bash
@@ -249,7 +249,7 @@ Nmap done: 1 IP address (1 host up) scanned in 4.48 seconds
 * * Denna port används normalt av Microsofts Remote Desktop-tjänst för att tillåta fjärrskrivbordsanslutningar. Den är för närvarande stängd, vilket betyder att ingen aktiv Remote Desktop-tjänst är igång.
 
 * 8022/tcp (OA System): 
-* * Även om den inte är universellt känd, används port 8022 ofta för alternativ till SSH. I detta fall är den öppen, vilket indikerar att någon tjänst är aktiv.
+* * Utifrån det jag har hittat online så används port 8022 av oa-system som verkar vara någon form av "office automation system". Porten är i detta fall öppen, vilket indikerar att en tjänst är aktiv.
 * * * OpenSSH 7.6p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
 
 * 22939/tcp och 23502/tcp (Okänd): 
@@ -257,6 +257,7 @@ Nmap done: 1 IP address (1 host up) scanned in 4.48 seconds
 
 ### Övrig nmap scan information 
 Nmap rapporterar till mig att detta rör sig om en Linux server som kör webbtjänster genom nginx
+
 Nmap gissar dock på en massa konstiga saker också 
 
 #### Aggressive OS guesses: 
@@ -272,7 +273,8 @@ Nmap gissar dock på en massa konstiga saker också
 * DD-WRT v24-sp1 (Linux 2.4) (91%)
 
 men ingen av dessa förutom kanske `Linux 4.9` känns trolig.
-Jag baserar min gissning på det som känns mest troligt och informationen jag får från andra håll i nmap scannen.
+
+Jag baserar min gissning på det som känns mest troligt och informationen jag får från andra håll i nmap scanen.
 
 Annat intressant som jag kan se är att SSL certifikatet är utfärdat av Let's Encrypt som är en välkänd utförare av SSL certifikat.
 
@@ -369,6 +371,7 @@ Nmap done: 1 IP address (1 host up) scanned in 29.09 seconds
 ```
 
 Att alla 1000 scannade portar är filtrerade säger till mig att detta är en brandvägg.
+
 Och det är inte möjligt för mig att ta reda på vilket OS eller andra intressanta saker om systemet, allt jag gör blir blockerat.
 
 ------------ 
@@ -376,33 +379,39 @@ Och det är inte möjligt för mig att ta reda på vilket OS eller andra intress
 # Labb del 2 - VG
 ![closed/filtered](closed&filtered.png)
 
-I min bild ovan kan man se aktiviteten på portarna 3389(closed) och 1(filtered)
+I min bild ovan kan man se aktiviteten på portarna 3389("closed") och 1("filtered")
+
+En "closed" port är som en "Reject" eller "Deny" policy i en brandvägg. När en förfrågan kommer till en "closed" port, svarar den med ett TCP RST-paket, vilket är ett sätt att avvisa eller neka förfrågan. Detta fungerar på samma sätt som när en förfrågan kommer till en brandvägg som har en "Reject" eller "Deny" policy för den typen av trafik, då svarar den med ett meddelande som indikerar att förfrågan har avvisats eller nekats.
+
+Å andra sidan kan en "filtered" port liknas vid en "Drop" policy i en brandvägg. När en förfrågan kommer till en filtrerad port, svarar den inte alls, vilket gör det svårt att avgöra om porten är "open" eller "closed". Detta fungerar på samma sätt som när en förfrågan kommer till en brandvägg som har en "Drop" policy för den typen av trafik, då svarar den inte heller på förfrågan, vilket gör att den försvinner.
 
 Jag har även bifogat wireshark capture filen på studentportalen
 
-frame 35, 38, 50 & 51 är kopplade till closed och filtered
+* frame 35, 38, 50 & 51 är kopplade till "closed" och "filtered"
 
 ------------
 
 ## Port 3389
 ![closed](telnet3389.png)
 
-Man kan också se att jag anropar port 3389 så får jag tillbaka ett svar om att det inte finns någon tjänst som kör på den porten, eller ja, mer specifikt får jag tillbaka som svar "connection refused", jag tillåts inte att ansluta till den porten men det är ju för att den är closed då ingen applikation körs på den porten
-Det är därför jag får tillbaka [RST, ACK]
+Man kan också se att jag anropar port 3389 så får jag tillbaka ett svar om att det inte finns någon tjänst som kör på den porten, eller ja, mer specifikt får jag tillbaka som svar "connection refused", jag tillåts inte att ansluta till den porten men det är ju för att den är "closed" då ingen applikation körs på den porten
+
+Det är därför jag får tillbaka [RST, ACK] i wireshark
 
 ## Port 1
 ![filtered](telnet1.png)
 
-På port 1 därför så får jag inget svar överhuvudtaget tillbaka. Jag anropar porten, men ingen svar.
-Där igenom så kan jag inte veta om porten är open eller closed och därför sätts den till filtered
-Och därför händer det inget heller efter jag skickar [SYN] till porten,
+På port 1 får jag inget svar överhuvudtaget tillbaka.
+Därför kan jag inte veta om porten är "open" eller "closed" och därför sätts den till "filtered"
+
+Och därför händer det inget heller efter jag skickar [SYN] till porten
 
 ------------
 
-## Vad är skillnaden på closed och filtered?
+## Vad är skillnaden på "closed" och "filtered"?
 
-* Filtered innebär att nmap inte vet om porten är öppen eller stängd för att något på vägen hindrar nmap. Det kan vara en brandvägg, något slags filter eller annat hinder.
-* Closed innebär att nmap vet att porten är stängd för att den har fått ett svar från hosten att porten är stängd. 
+* "filtered" innebär att nmap inte vet om porten är öppen eller stängd för att något på vägen hindrar nmap. Det kan vara en brandvägg, något slags filter eller annat hinder.
+* "closed" innebär att nmap vet att porten är stängd för att den har fått ett svar från hosten att porten är stängd. 
 * * Och det innebär i sin tur att det inte finns något tjänst som lyssnar på porten.
-* * * En closed port kommer att ändras till Open så snart där är en tjänst som använder sig av porten.
+* * * En "closed" port kommer att ändras till Open så snart där är en tjänst som använder sig av porten.
 
