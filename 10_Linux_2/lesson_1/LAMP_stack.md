@@ -1,8 +1,14 @@
-'sudo apt update && sudo apt upgrade -y'
+### Install and update
+```
+sudo apt update && sudo apt upgrade -y
 sudo apt install apache2
 sudo apt install mysql-server
 sudo mysql_secure_installation
 sudo apt install php libapache2-mod-php php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip
+```
+
+### Configure Apache
+```html
 sudo nano /etc/apache2/sites-available/wordpress.conf
 
 <VirtualHost *:80>
@@ -21,7 +27,10 @@ sudo a2ensite wordpress
 sudo a2dissite 000-default
 sudo a2enmod rewrite
 sudo service apache2 reload
+```
 
+### Configure MySQL
+```sql
 sudo mysql -u root -p
 
 
@@ -34,7 +43,10 @@ GRANT ALL ON wordpress.* TO 'wordpressuser'@'localhost';
 FLUSH PRIVILEGES;
 
 EXIT;
+```
 
+### Install WordPress
+```bash
 cd /tmp
 curl -O https://wordpress.org/latest.tar.gz
 tar xzvf latest.tar.gz
@@ -50,17 +62,22 @@ sudo find /var/www/wordpress/ -type f -exec chmod 640 {} \;
 curl -s https://api.wordpress.org/secret-key/1.1/salt/
 
 sudo nano /var/www/wordpress/wp-config.php
-
+```
+```sql
+define('DB_HOST', 'localhost');
 define('DB_NAME', 'wordpress');
 define('DB_USER', 'wordpressuser');
 define('DB_PASSWORD', 'STRONG_PASSWORD');
 and replace secret keys
-
+```
+### Configure SSL
+```html
 sudo service apache2 restart
 
 sudo apt install certbot python3-certbot-apache
 
 sudo certbot --apache
+```
 
 
 
