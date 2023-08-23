@@ -30,18 +30,20 @@ sudo service apache2 reload
 ```
 
 ### Configure MySQL
+#### Configure root password
 ```sql
-sudo mysql -u root -p
+sudo mysql -u root
 
-
-CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-CREATE USER 'wordpressuser'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD';
-
-GRANT ALL ON wordpress.* TO 'wordpressuser'@'localhost';
-
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'STRONG_PASSWORD';
 FLUSH PRIVILEGES;
-
+EXIT;
+```
+#### Create database and user
+```sql
+CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE USER 'wordpressuser'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD';
+GRANT ALL ON wordpress.* TO 'wordpressuser'@'localhost';
+FLUSH PRIVILEGES;
 EXIT;
 ```
 
