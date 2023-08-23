@@ -1,4 +1,4 @@
-'''sudo apt update && sudo apt upgrade -y'''
+'sudo apt update && sudo apt upgrade -y'
 sudo apt install apache2
 sudo apt install mysql-server
 sudo mysql_secure_installation
