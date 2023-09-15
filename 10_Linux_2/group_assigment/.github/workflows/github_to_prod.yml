@@ -1,0 +1,85 @@
+name: Production Server
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: print secrets
+        env:
+          GITHUB_ACTION_KEY: ${{secrets.GHUB_ACTION_KEY}}
+        run: |
+          echo "$GITHUB_ACTION_KEY" >> github_action_key
+      
+      - name: Setup known hosts
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "[gear5.online]:22 ${{ secrets.SERVER_PUBLIC_KEY }}" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Backup, then Clone/Pull repository on prod
+        run: |
+          chmod 600 ./github_action_key
+          ssh -o StrictHostKeyChecking=no -T -i ./github_action_key root@gear5.online <<'EOF'
+          # Add GitHub's RSA key to known_hosts to prevent verification issues
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+          
+          TODAY=$(date +'%Y-%m-%d')
+          echo "The value of TODAY is: $TODAY"
+          mkdir -p /var/www/backup/$TODAY
+      
+          rsync -avL /var/www/html/wp-content/plugins/ /var/www/backup/$TODAY/plugins/
+          rsync -avL /var/www/html/wp-content/themes/ /var/www/backup/$TODAY/themes/
+          rsync -avL /var/www/html/wp-content/uploads/ /var/www/backup/$TODAY/uploads/
+      
+          rm -rf /var/www/html/wp-content/plugins
+          rm -rf /var/www/html/wp-content/themes
+          rm -rf /var/www/html/wp-content/uploads
+      
+          if [ -d "/opt/gear5" ]; then
+              echo "Folder exists, doing a pull"
+              cd /opt/gear5
+              git pull
+          else  
+              echo "Folder doesn't exist, doing a clone"
+              git clone git@github.com:SamanPetfat/gear5.git /opt/gear5
+          fi
+          EOF
+
+      - name: Setup Symlinks and Permissions
+        run: |
+          ssh -o StrictHostKeyChecking=no -T -i ./github_action_key root@gear5.online <<EOF
+          ln -s /opt/gear5/www/html/wp-content/plugins /var/www/html/wp-content/plugins
+          ln -s /opt/gear5/www/html/wp-content/themes /var/www/html/wp-content/themes
+          ln -s /opt/gear5/www/html/wp-content/uploads /var/www/html/wp-content/uploads
+
+          chown -h www-data:www-data /var/www/html/wp-content/plugins
+          chown -h www-data:www-data /var/www/html/wp-content/themes
+          chown -h www-data:www-data /var/www/html/wp-content/uploads
+
+          chown -R www-data:www-data /opt/gear5/www/html/wp-content
+
+          service apache2 restart
+          EOF
+
+      - name: Activate latest theme
+        run: |
+          ssh -o StrictHostKeyChecking=no -T -i ./github_action_key root@gear5.online <<EOF
+          LATEST_THEME=\$(find /opt/gear5/www/html/wp-content/themes -maxdepth 1 -type d | xargs -I {} stat --format '%Y %n' {} | sort -n | tail -1 | awk '{print \$2}' | xargs basename)
+          cd /var/www/html
+          if [[ \$LATEST_THEME == "themes" ]]; then
+            echo "No new theme supplied."
+          else
+            wp theme activate \$LATEST_THEME --allow-root
+          fi
+          EOF
+
