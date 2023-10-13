@@ -131,7 +131,7 @@ class DataHandler_Server:
     def send_data_to_client(self, conn, clients, data):  # pragma: no cover
         if data is None:
             return
-        elif type(data) == list:
+        elif type(data) is list:
             data_str = str(data)
             conn.send(data_str.encode())
         elif data == "error":
