@@ -6,14 +6,14 @@ import game.word_functions as w
 def save_hint(word, user_word, correct_spot, correct_char):
 
     try:
-        with open('data\hints.txt', 'r', encoding="utf-8") as file:
+        with open('data/hints.txt', 'r', encoding="utf-8") as file:
             hint_list = json.load(file)
     except FileNotFoundError:
         # If the file doesn't exist, use default values
         hint_list = []
 
     hint_list.append((word, user_word, correct_spot, correct_char))
-    with open('data\hints.txt', 'w', encoding="utf-8") as f:
+    with open('data/hints.txt', 'w', encoding="utf-8") as f:
         json.dump(hint_list, f)
 
 
@@ -40,7 +40,7 @@ def get_hints(user_word):
 
     while not end_of_game:
         try:
-            with open('data\hints.txt', 'r', encoding="utf-8") as file:
+            with open('data/hints.txt', 'r', encoding="utf-8") as file:
                 hints = json.load(file)
 
                 corr_or_wrong = check_hints(word, hints)

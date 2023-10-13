@@ -13,7 +13,7 @@ def highscore(num_of_guesses):
         if choice == "ja":
             name = input("Vänligen ange ditt fulla namn: ").title()
             try:
-                with open('data\highscore.txt', 'r') as file:
+                with open('data/highscore.txt', 'r') as file:
                     highscores = json.load(file)
             except FileNotFoundError:
                 # If the file doesn't exist, use default values
@@ -22,7 +22,7 @@ def highscore(num_of_guesses):
             highscores.append((name, num_of_guesses))
             highscores = sorted(highscores, key=itemgetter(1),
                                 reverse=False)[:10]
-            with open('data\highscore.txt', 'w') as file:
+            with open('data/highscore.txt', 'w') as file:
                 json.dump(highscores, file)
 
             highscores = []
@@ -43,7 +43,7 @@ def highscore(num_of_guesses):
 def print_highscore():
 
     try:
-        with open('data\highscore.txt', 'r') as file:
+        with open('data/highscore.txt', 'r') as file:
             highscores = json.load(file)
             limit = 10
         print("\nNuvarande topp 10 bästa spelrundor!")
@@ -77,8 +77,8 @@ def reset_highscore():
             additional_check = input(
                 "Är du säker på att du vill återställa highscoren?: ").lower()
             if additional_check == "ja":
-                if os.path.exists('data\highscore.txt'):
-                    os.remove('data\highscore.txt')
+                if os.path.exists('data/highscore.txt'):
+                    os.remove('data/highscore.txt')
                     print(
                         "Highscore har nollställts!\nÅtergår till huvucmenyn.")
                     reset_done = True

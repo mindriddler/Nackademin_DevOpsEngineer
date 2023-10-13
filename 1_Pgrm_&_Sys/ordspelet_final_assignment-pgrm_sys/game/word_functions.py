@@ -5,7 +5,7 @@ import game.hint_functions as h_f
 
 def get_word():
     try:
-        file = open("data\words.txt", "r", encoding="utf-8")
+        file = open("data/words.txt", "r", encoding="utf-8")
         words = file.read()
         listOfWords = words.split("\n")
         randWord = random.choice(listOfWords)
@@ -33,7 +33,7 @@ def player_word():
 
 def create_word_list():
     try:
-        with open("data\words.txt", "r", encoding="utf-8") as words:
+        with open("data/words.txt", "r", encoding="utf-8") as words:
             word_lst = [word.strip() for word in words.readlines()]
         return word_lst
     except FileNotFoundError:
