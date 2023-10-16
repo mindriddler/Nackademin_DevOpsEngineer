@@ -16,7 +16,7 @@
     <maven.compiler.target>17</maven.compiler.target>
 	<junit>5.9.2</junit>
 	<mysql>8.0.31</mysql>
-	<json>20230227</json>
+	<json>20231013</json>
 	<mockito>5.0.0</mockito>
   </properties>
 
