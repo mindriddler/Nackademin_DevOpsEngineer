@@ -1,0 +1,15 @@
+[webb]
+172.28.128.88
+
+[databas]
+172.28.128.15
+
+[almalinux]
+172.28.128.176
+
+[all:vars]
+ansible_user=deploy
+ansible_ssh_private_key_file=~/.ssh/deploy_id_rsa
+ansible_become=yes
+ansible_become_user=root
+ansible_become_method=sudo
