@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-almalinux-8
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 yum install -y net-tools
 
 echo "Create deploy user"
