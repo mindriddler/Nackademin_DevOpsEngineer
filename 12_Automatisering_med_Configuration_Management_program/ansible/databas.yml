@@ -1,0 +1,14 @@
+---
+- hosts: databas
+  tasks:
+    - name: Make sure latest version of the MariaDB package is installed.
+      yum:
+        name: mariadb-server
+        state: latest
+
+
+    - name: Start MariaDB on boot.
+      service:
+        name: mariadb
+        enabled: yes
+        state: started

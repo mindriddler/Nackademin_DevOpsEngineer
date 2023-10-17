@@ -1,5 +1,14 @@
 ---
 - hosts: webb
+  vars:
+    files:
+      my_vhost:
+        - "files/my_vhost.conf"
+        - "/etc/httpd/conf.d/my_vhost.conf"
+      index:
+        - "files/index.html"
+        - "/var/www/example.org/index.html"
+
   tasks:
     - name: Make sure the latest version of the Apache package is installed.
       package:
@@ -12,12 +21,29 @@
         enabled: yes
         state: started
 
-    - name: Define a vhost.
+    - name: Create directory
+      file:
+        state: directory
+        path: "/var/www/example.org"
+        owner: apache
+        group: apache
+
+    - name: Define a vhost and copy index.html with loop.
       copy:
-        src: "files/my_vhost.conf"
-        dest: "/etc/httpd/conf.d/my_vhost.conf"
+        src: "{{ item.value[0] }}"
+        dest: "{{ item.value[1] }}"
+      loop: "{{ files|dict2items }}"
       notify:
         - Restart apache
+
+#    - name: test
+#      copy:
+#        src: "{{ item.key }}"
+#        dest: "{{ item.value }}"
+#      with_dict:
+#        - {"files/my_vhost.conf": "/etc/httpd/conf.d/my_vhost.conf"}
+#        - {"files/index.html": "/var/www/example.org/index.html"}
+
 
   handlers:
     - name: Restart apache
