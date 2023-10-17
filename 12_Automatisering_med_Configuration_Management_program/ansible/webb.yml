@@ -1,0 +1,26 @@
+---
+- hosts: webb
+  tasks:
+    - name: Make sure the latest version of the Apache package is installed.
+      package:
+        name: httpd
+        state: latest
+
+    - name: Start Apache at boot.
+      service:
+        name: httpd
+        enabled: yes
+        state: started
+
+    - name: Define a vhost.
+      copy:
+        src: "files/my_vhost.conf"
+        dest: "/etc/httpd/conf.d/my_vhost.conf"
+      notify:
+        - Restart apache
+
+  handlers:
+    - name: Restart apache
+      service:
+        name: httpd
+        state: restarted
