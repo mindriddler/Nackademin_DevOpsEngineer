@@ -1,0 +1,26 @@
+---
+- hosts: almalinux
+  tasks:
+
+    - name: Create directory
+      file:
+        state: directory
+        path: /home/deploy/ansible-playground
+
+    - name: Copy file to uppercase destination
+      copy:
+        src: "files/index.html"
+        dest: "/home/deploy/ansible-playground/{{ 'index.html' | upper }}"
+    
+    - name: Get filename in return
+      find:
+        paths: /home/deploy/ansible-playground/
+        recurse: true
+        patterns:
+          - 'INDEX.HTML'
+      register: find_results
+
+    - name: Print directory path
+      debug:
+        msg: "{{ item.path }}"
+      loop: "{{ find_results.files }}"
