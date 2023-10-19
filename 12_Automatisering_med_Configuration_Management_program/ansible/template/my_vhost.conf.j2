@@ -1,4 +1,4 @@
-<VirtualHost *:80>
+<VirtualHost {{ ansible_eth1.ipv4.address }}:80>
     ServerName www.fredrik.cm
     DocumentRoot "/var/www/fredrik.cm"
 </VirtualHost>

@@ -2,7 +2,6 @@
 - hosts: webb
   vars:
     files:
-      "files/my_vhost.conf": "/etc/httpd/conf.d/my_vhost.conf"
       "files/index.html": "/var/www/fredrik.cm/index.html"
 
   tasks:
@@ -24,23 +23,27 @@
         owner: apache
         group: apache
 
-    - name: Define a vhost and copy index.html with loop.
+    - name: Setup vhost
+      template:
+        src: template/my_vhost.conf.j2
+        dest: /etc/httpd/conf.d/my_vhost.conf
+      notify:
+        - Restart apache
+                
+    - name: Copy index.html.
       copy:
         src: "{{ item.key }}"
         dest: "{{ item.value }}"
       loop: "{{ files | dict2items }}"
-      notify:
-        - Restart apache
 
-#    - name: test
-#      copy:
-#        src: "{{ item.key }}"
-#        dest: "{{ item.value }}"
-#      with_dict:
-#        - {"files/my_vhost.conf": "/etc/httpd/conf.d/my_vhost.conf"}
-#        - {"files/index.html": "/var/www/example.org/index.html"}
-
-
+    - name: Create users with loop
+      user:
+        name: "{{ item }}"
+      with_items:
+        - bert
+        - earnie
+        - cookie-monster
+        
   handlers:
     - name: Restart apache
       service:

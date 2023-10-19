@@ -1,10 +1,15 @@
 ---
 - hosts: databas
+  vars_files:
+    - vault/passwords.yml
   tasks:
     - name: Make sure latest version of the MariaDB package is installed.
       yum:
-        name: mariadb-server
+        name: "{{ item }}"
         state: latest
+      with_items:
+        - mariadb-server
+        - MySQL-python
 
 
     - name: Start MariaDB on boot.
@@ -12,3 +17,23 @@
         name: mariadb
         enabled: yes
         state: started
+
+    - name: Create db
+      mysql_db:
+        name: webappdb
+        state: present
+
+    - name: Create dbuser "webappuser"
+      mysql_user:
+        name: webappuser
+        password: "{{ mysql_webappuser_password }}"
+        state: present
+        priv: '*.*:ALL,GRANT'
+      become: yes
+      become_user: mysql
+
+    - name: Copy over several files with loop
+      copy:
+        src: "{{ item }}"
+        dest: "/home/deploy/"
+      with_fileglob: "files/*.txt"
