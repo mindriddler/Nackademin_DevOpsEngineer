@@ -1,0 +1,3 @@
+---
+webserver_files:
+  "files/index.html": "/var/www/fredrik.cm/index.html"

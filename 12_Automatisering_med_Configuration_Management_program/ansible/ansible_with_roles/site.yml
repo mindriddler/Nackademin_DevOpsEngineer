@@ -1,0 +1,15 @@
+---
+- name: Playbook for installing and configuring a database server
+  hosts: databas
+  roles:
+    - dbserver
+
+- name: Playbook for installing and configuring a web server
+  hosts: webb
+  roles:
+    - webserver
+
+- name: Playbook for AlmaLinux
+  hosts: almalinux
+  roles:
+    - almalinux

@@ -1,0 +1,29 @@
+---
+- name: Create directory
+  ansible.builtin.file:
+    state: directory
+    path: /home/deploy/ansible-playground
+    owner: deploy
+    group: deploy
+    mode: "0755"
+
+- name: Copy file to uppercase destination
+  ansible.builtin.copy:
+    src: "files/index.html"
+    dest: "/home/deploy/ansible-playground/{{ 'index.html' | upper }}"
+    owner: deploy
+    group: deploy
+    mode: "0644"
+
+- name: Get filename in return
+  ansible.builtin.find:
+    paths: /home/deploy/ansible-playground/
+    recurse: true
+    patterns:
+      - "INDEX.HTML"
+  register: find_results
+
+- name: Print directory path
+  ansible.builtin.debug:
+    msg: "{{ item.path }}"
+  loop: "{{ find_results.files }}"

@@ -1,0 +1,37 @@
+---
+- name: Make sure the latest version of the MariaDB package is installed.
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - mariadb-server
+    - MySQL-python
+
+- name: Start MariaDB on boot.
+  ansible.builtin.service:
+    name: mariadb
+    enabled: true
+    state: started
+
+- name: Create db
+  community.mysql.mysql_user:
+    name: webappdb
+    state: present
+
+- name: Create dbuser "webappuser"
+  community.mysql.mysql_user:
+    name: webappuser
+    password: "{{ dbserver_mysql_webappuser_password }}"
+    state: present
+    priv: "*.*:ALL,GRANT"
+  become: true
+  become_user: mysql
+
+- name: Copy over several files with a loop
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/home/deploy/"
+    owner: deploy
+    group: deploy
+    mode: "0644"
+  with_fileglob: "files/*.txt"

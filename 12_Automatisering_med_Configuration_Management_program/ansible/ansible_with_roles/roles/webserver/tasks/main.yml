@@ -1,0 +1,47 @@
+---
+- name: Make sure the latest version of the Apache package is installed.
+  ansible.builtin.yum:
+    name: httpd
+    state: latest
+
+- name: Start Apache at boot.
+  ansible.builtin.service:
+    name: httpd
+    enabled: true
+    state: started
+
+- name: Create directory
+  ansible.builtin.file:
+    state: directory
+    path: "/var/www/fredrik.cm"
+    owner: apache
+    group: apache
+    mode: "0755"
+
+- name: Setup vhost
+  ansible.builtin.template:
+    src: my_vhost.conf.j2
+    dest: /etc/httpd/conf.d/my_vhost.conf
+    owner: apache
+    group: apache
+    mode: "0644"
+  notify:
+    - Restart apache
+  
+
+- name: Copy index.html.
+  ansible.builtin.copy:
+    src: "{{ item.key }}"
+    dest: "{{ item.value }}"
+    owner: apache
+    group: apache
+    mode: "0644"
+  loop: "{{ webserver_files | dict2items }}"
+
+- name: Create users with loop
+  ansible.builtin.user:
+    name: "{{ item }}"
+  with_items:
+    - bert
+    - earnie
+    - cookie-monster
