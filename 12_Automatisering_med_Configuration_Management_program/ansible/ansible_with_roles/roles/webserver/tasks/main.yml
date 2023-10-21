@@ -28,7 +28,6 @@
   notify:
     - Restart apache
   
-
 - name: Copy index.html.
   ansible.builtin.copy:
     src: "{{ item.key }}"
