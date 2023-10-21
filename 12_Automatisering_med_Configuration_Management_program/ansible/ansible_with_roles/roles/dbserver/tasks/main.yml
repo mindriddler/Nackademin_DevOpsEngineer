@@ -30,7 +30,7 @@
 - name: Copy over several files with a loop
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "/home/deploy/"
+    dest: "/home/{{ ansible_user }}"
     owner: deploy
     group: deploy
     mode: "0644"
