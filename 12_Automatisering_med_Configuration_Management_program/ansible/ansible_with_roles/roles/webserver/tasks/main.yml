@@ -40,8 +40,7 @@
 
 - name: Create users with loop
   ansible.builtin.user:
-    name: "{{ item }}"
-  with_items:
-    - bert
-    - earnie
-    - cookie-monster
+    name: "{{ item.value.name }}"
+    password: "{{ item.value.password }}"
+    state: present
+  with_dict: "{{ users }}"
