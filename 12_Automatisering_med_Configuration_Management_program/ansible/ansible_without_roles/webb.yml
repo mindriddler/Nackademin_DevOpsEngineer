@@ -1,51 +1,59 @@
 ---
-- hosts: webb
+- name: Playbook for installing and configuring a web server
+  hosts: webb
   vars:
     files:
       "files/index.html": "/var/www/fredrik.cm/index.html"
 
   tasks:
     - name: Make sure the latest version of the Apache package is installed.
-      package:
+      ansible.builtin.yum:
         name: httpd
-        state: latest
+        state: present
 
     - name: Start Apache at boot.
-      service:
+      ansible.builtin.service:
         name: httpd
-        enabled: yes
+        enabled: true
         state: started
 
     - name: Create directory
-      file:
+      ansible.builtin.file:
         state: directory
         path: "/var/www/fredrik.cm"
         owner: apache
         group: apache
+        mode: "0755"
 
     - name: Setup vhost
-      template:
+      ansible.builtin.template:
         src: template/my_vhost.conf.j2
         dest: /etc/httpd/conf.d/my_vhost.conf
+        owner: apache
+        group: apache
+        mode: "0644"
       notify:
         - Restart apache
-                
+
     - name: Copy index.html.
-      copy:
+      ansible.builtin.copy:
         src: "{{ item.key }}"
         dest: "{{ item.value }}"
+        owner: apache
+        group: apache
+        mode: "0644"
       loop: "{{ files | dict2items }}"
 
     - name: Create users with loop
-      user:
+      ansible.builtin.user:
         name: "{{ item }}"
       with_items:
-        - bert
-        - earnie
-        - cookie-monster
-        
+        - { name: "bert", password: "$6$/pgjFNgmtyqrwbw3$EJn.3MPJA0zUP/IRiZyFoQGNttIW4H8E/TRWlhApGLnQ1NpCHERJwDTq2p4e0EByt9U3zfS4Zr7bcHr1SxZg8." }
+        - { name: "earnie", password: "$6$/pgjFNgmtyqrwbw3$EJn.3MPJA0zUP/IRiZyFoQGNttIW4H8E/TRWlhApGLnQ1NpCHERJwDTq2p4e0EByt9U3zfS4Zr7bcHr1SxZg8." }
+        - { name: "cookie-monster", password: "$6$/pgjFNgmtyqrwbw3$EJn.3MPJA0zUP/IRiZyFoQGNttIW4H8E/TRWlhApGLnQ1NpCHERJwDTq2p4e0EByt9U3zfS4Zr7bcHr1SxZg8." }
+
   handlers:
     - name: Restart apache
-      service:
+      ansible.builtin.service:
         name: httpd
         state: restarted

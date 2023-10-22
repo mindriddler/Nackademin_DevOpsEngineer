@@ -1,6 +1,7 @@
 ---
-- hosts: all
+- name: Set timezone
+  hosts: all
   tasks:
     - name: Set timezone to UTC.
-      timezone:
+      community.general.timezone:
         name: UTC

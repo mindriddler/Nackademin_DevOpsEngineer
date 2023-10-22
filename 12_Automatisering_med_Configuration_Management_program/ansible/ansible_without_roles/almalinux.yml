@@ -1,26 +1,26 @@
 ---
+- name: Ansible playground
 - hosts: almalinux
   tasks:
-
     - name: Create directory
-      file:
+      ansible.builtin.file:
         state: directory
         path: /home/deploy/ansible-playground
 
     - name: Copy file to uppercase destination
-      copy:
+      ansible.builtin.copy:
         src: "files/index.html"
         dest: "/home/deploy/ansible-playground/{{ 'index.html' | upper }}"
-    
+
     - name: Get filename in return
-      find:
+      ansible.builtin.find:
         paths: /home/deploy/ansible-playground/
         recurse: true
         patterns:
-          - 'INDEX.HTML'
+          - "INDEX.HTML"
       register: find_results
 
     - name: Print directory path
-      debug:
+      ansible.builtin.debug:
         msg: "{{ item.path }}"
       loop: "{{ find_results.files }}"

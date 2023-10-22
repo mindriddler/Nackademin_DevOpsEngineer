@@ -5,8 +5,8 @@ if [ "$1" = "add" ]; then
 	fi
 	cp ~/.ssh/deploy_id_rsa.pub ./
 elif [ "$1" = "del" ]; then
-	if  [ -f ~/.ssh/deploy_id_rsa ]; then
+	if [ -f ~/.ssh/deploy_id_rsa ]; then
 		rm ~/.ssh/deploy_id_rsa*
-	rm ./deploy_id_rsa.pub
+		rm ./deploy_id_rsa.pub
 	fi
 fi

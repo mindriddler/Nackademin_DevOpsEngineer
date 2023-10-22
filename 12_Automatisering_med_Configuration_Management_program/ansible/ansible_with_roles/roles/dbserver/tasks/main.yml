@@ -2,7 +2,7 @@
 - name: Make sure the latest version of the MariaDB package is installed.
   ansible.builtin.yum:
     name: "{{ item }}"
-    state: latest
+    state: present
   with_items:
     - mariadb-server
     - MySQL-python
@@ -24,6 +24,7 @@
     password: "{{ dbserver_mysql_webappuser_password }}"
     state: present
     priv: "*.*:ALL,GRANT"
+  become: true
   become_user: mysql
 
 - name: Copy over several files with a loop

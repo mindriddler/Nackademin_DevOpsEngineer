@@ -2,7 +2,7 @@
 webserver_files:
   "files/index.html": "/var/www/fredrik.cm/index.html"
 
-users:
+webserver_users:
   bert:
     name: "bert"
     password: "$6$/pgjFNgmtyqrwbw3$EJn.3MPJA0zUP/IRiZyFoQGNttIW4H8E/TRWlhApGLnQ1NpCHERJwDTq2p4e0EByt9U3zfS4Zr7bcHr1SxZg8."
@@ -11,4 +11,4 @@ users:
     password: "$6$/pgjFNgmtyqrwbw3$EJn.3MPJA0zUP/IRiZyFoQGNttIW4H8E/TRWlhApGLnQ1NpCHERJwDTq2p4e0EByt9U3zfS4Zr7bcHr1SxZg8."
   cookie-monster:
     name: "cookie-monster"
-    password: "$6$/pgjFNgmtyqrwbw3$EJn.3MPJA0zUP/IRiZyFoQGNttIW4H8E/TRWlhApGLnQ1NpCHERJwDTq2p4e0EByt9U3zfS4Zr7bcHr1SxZg8."    
+    password: "$6$/pgjFNgmtyqrwbw3$EJn.3MPJA0zUP/IRiZyFoQGNttIW4H8E/TRWlhApGLnQ1NpCHERJwDTq2p4e0EByt9U3zfS4Zr7bcHr1SxZg8."

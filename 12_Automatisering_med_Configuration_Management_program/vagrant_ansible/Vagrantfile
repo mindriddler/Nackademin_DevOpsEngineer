@@ -63,7 +63,7 @@ Vagrant.configure("2") do |config|
     d3.vm.synced_folder "./", "/vagrant"
     d3.vm.provision :shell, path: "bootstrap3.sh"
     d3.vm.network "private_network", type: "dhcp"
-    d3.vm.provision "shell", inline: "echo '==================='; echo -n 'Detta är IP adressen för almalinux: '; echo $(ifconfig -a ens6 | grep inet | grep -v inet6 | awk '{print $2}'); echo '================='"
+    d3.vm.provision "shell", inline: "echo '==================='; echo -n 'Detta är IP adressen för almalinux: '; echo $(ifconfig -a ens6 | grep inet | grep -v inet6 | awk '{print $2}'); echo '==================='"
 
   end
   

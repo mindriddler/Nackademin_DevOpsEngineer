@@ -2,22 +2,22 @@
 - name: Create directory
   ansible.builtin.file:
     state: directory
-    path: /home/deploy/ansible-playground
-    owner: deploy
-    group: deploy
+    path: /home/{{ ansible_user }}/ansible-playground
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: "0755"
 
 - name: Copy file to uppercase destination
   ansible.builtin.copy:
     src: "files/index.html"
-    dest: "/home/deploy/ansible-playground/{{ 'index.html' | upper }}"
-    owner: deploy
-    group: deploy
+    dest: "/home/{{ ansible_user }}/ansible-playground/{{ 'index.html' | upper }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: "0644"
 
 - name: Get filename in return
   ansible.builtin.find:
-    paths: /home/deploy/ansible-playground/
+    paths: /home/{{ ansible_user }}/ansible-playground/
     recurse: true
     patterns:
       - "INDEX.HTML"

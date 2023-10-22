@@ -1,39 +1,43 @@
 ---
-- hosts: databas
+- name: Playbook for installing and configuring a database server
+  hosts: databas
   vars_files:
     - vault/passwords.yml
   tasks:
     - name: Make sure latest version of the MariaDB package is installed.
-      yum:
+      ansible.builtin.yum:
         name: "{{ item }}"
-        state: latest
+        state: present
       with_items:
         - mariadb-server
         - MySQL-python
 
-
     - name: Start MariaDB on boot.
-      service:
+      ansible.builtin.service:
         name: mariadb
-        enabled: yes
+        enabled: true
         state: started
 
     - name: Create db
-      mysql_db:
+      community.mysql.mysql_db:
         name: webappdb
         state: present
 
     - name: Create dbuser "webappuser"
-      mysql_user:
+      community.mysql.mysql_user:
         name: webappuser
         password: "{{ mysql_webappuser_password }}"
         state: present
         priv: '*.*:ALL,GRANT'
-      become: yes
+      become: true
       become_user: mysql
 
     - name: Copy over several files with loop
-      copy:
+      ansible.builtin.copy:
         src: "{{ item }}"
-        dest: "/home/deploy/"
+        dest: "/home/{{ ansible_user }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "0644"
+
       with_fileglob: "files/*.txt"

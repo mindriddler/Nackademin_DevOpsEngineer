@@ -2,7 +2,7 @@
 - name: Make sure the latest version of the Apache package is installed.
   ansible.builtin.yum:
     name: httpd
-    state: latest
+    state: present
 
 - name: Start Apache at boot.
   ansible.builtin.service:
@@ -27,7 +27,7 @@
     mode: "0644"
   notify:
     - Restart apache
-  
+
 - name: Copy index.html.
   ansible.builtin.copy:
     src: "{{ item.key }}"
@@ -42,4 +42,4 @@
     name: "{{ item.value.name }}"
     password: "{{ item.value.password }}"
     state: present
-  with_dict: "{{ users }}"
+  with_dict: "{{ webserver_users }}"
