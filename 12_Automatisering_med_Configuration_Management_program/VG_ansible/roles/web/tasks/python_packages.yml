@@ -1,0 +1,7 @@
+---
+- name: Install python packages
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ web_python_packages }}"
+  tags: python_packages

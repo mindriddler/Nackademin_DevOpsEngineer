@@ -1,4 +1,3 @@
----
 - name: Install yum and cpan packages
   ansible.builtin.import_tasks: packages.yml
   tags: yum_cpans
@@ -29,3 +28,14 @@
   loop_control:
     label: "{{ item.key }}: {{ item.value.src }} to {{ item.value.dest }}"
   tags: move_files
+
+- name: Install python packages needed for httpd_can_network_connect
+  ansible.builtin.import_tasks: python_packages.yml
+  tags: python_packages
+
+- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+  ansible.posix.seboolean:
+    name: httpd_can_network_connect
+    state: true
+    persistent: true
+  tags: httpd_can_network_connect

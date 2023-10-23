@@ -12,6 +12,10 @@ web_rpm_packages:
 web_cpan_packages:
   - Dancer
 
+web_python_packages:
+  - libselinux-python
+  - libsemanage-python
+
 web_db:
   dbuser: web-app
   database: webappdb
