@@ -64,9 +64,27 @@ Vagrant.configure("2") do |config|
     d3.vm.provision :shell, path: "bootstrap3.sh"
     d3.vm.network "private_network", type: "dhcp"
     d3.vm.provision "shell", inline: "echo '==================='; echo -n 'Detta är IP adressen för almalinux: '; echo $(ifconfig -a ens6 | grep inet | grep -v inet6 | awk '{print $2}'); echo '==================='"
+  
+  end
+
+    config.vm.define "VGWebb" do |d4|
+    d4.vm.box = "centos/7"
+    d4.vm.synced_folder "./", "/vagrant"
+    d4.vm.provision :shell, path: "bootstrapVGWEBB.sh"
+    d4.vm.network "private_network", type: "dhcp"
+    d4.vm.provision "shell", inline: "echo '==================='; echo -n 'Detta är IP adressen för VGWebb: '; echo $(ifconfig -a eth1 | grep inet | grep -v inet6 | awk '{print $2}'); echo '==================='"
 
   end
-  
+
+    config.vm.define "VGDB" do |d5|
+    d5.vm.box = "centos/7"
+    d5.vm.synced_folder "./", "/vagrant"
+    d5.vm.provision :shell, path: "bootstrapVGDB.sh"
+    d5.vm.network "private_network", type: "dhcp"
+    d5.vm.provision "shell", inline: "echo '==================='; echo -n 'Detta är IP adressen för VGDatabase: '; echo $(ifconfig -a eth1 | grep inet | grep -v inet6 | awk '{print $2}'); echo '==================='"
+
+  end
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.

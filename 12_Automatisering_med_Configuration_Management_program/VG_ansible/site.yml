@@ -1,0 +1,10 @@
+---
+- name: Playbook for installing and configuring a database server
+  hosts: dbservers
+  roles:
+    - db
+
+- name: Playbook for installing and configuring a web server
+  hosts: webservers
+  roles:
+    - web
