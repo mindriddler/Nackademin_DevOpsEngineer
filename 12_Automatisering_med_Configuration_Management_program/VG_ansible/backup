@@ -1,0 +1,17 @@
+- name: Show yum packages to be installed
+  ansible.builtin.import_tasks: debug.yml
+  tags: debug_cpan_packages
+
+- name: Show yum packages to be installed
+  ansible.builtin.import_tasks: debug.yml
+  tags: debug_yum_packages
+
+- name: Show packages to be installed
+  ansible.builtin.debug:
+    msg: "{{ webservers_rpm_packages }}"
+  tags: debug_yum_packages
+
+- name: Show CPAN modules to be installed
+  ansible.builtin.debug:
+    msg: "{{ webservers_cpan_packages }}"
+  tags: debug_cpan_packages

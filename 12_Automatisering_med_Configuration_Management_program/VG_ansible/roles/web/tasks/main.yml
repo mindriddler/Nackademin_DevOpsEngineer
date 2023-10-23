@@ -1,0 +1,47 @@
+---
+- name: Install yum and cpan packages
+  ansible.builtin.import_tasks: packages.yml
+  tags: yum_cpans
+
+- name: Create folder for webapp
+  ansible.builtin.file:
+    path: /var/www/demo
+    state: directory
+    mode: "755"
+  tags: create_webapp_folder
+  notify: Clone git repo for webapp
+
+- name: Flusing handlers to clone git repo if notified
+  ansible.builtin.meta: flush_handlers
+
+- name: Copy vhost file
+  ansible.builtin.template:
+    src: my_vhost.conf.j2
+    dest: /etc/httpd/conf.d/my_vhost.conf
+    owner: apache
+    group: apache
+    mode: "644"
+  tags: copy_vhost_file
+  notify: Restart httpd
+
+- name: Copy service file to webserver
+  ansible.builtin.copy:
+    src: demo_service
+    dest: /etc/systemd/system/demod.service
+    owner: root
+    group: root
+    mode: "644"
+  tags: copy_service_file
+
+- name: Copy production.yml to webserver
+  ansible.builtin.template:
+    src: production.yml.j2
+    dest: /var/www/demo/environments/production.yml
+    owner: apache
+    group: apache
+    mode: "644"
+  tags: copy_production_file
+
+- name: Import tasks from service.yml to start httpd
+  ansible.builtin.import_tasks: service.yml
+  tags: service

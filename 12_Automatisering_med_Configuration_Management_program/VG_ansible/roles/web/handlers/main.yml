@@ -1,0 +1,12 @@
+---
+- name: Restart httpd
+  ansible.builtin.service:
+    name: httpd
+    state: restarted
+
+- name: Clone git repo for webapp
+  ansible.builtin.git:
+    repo: https://github.com/initab/demoapp.git
+    dest: /var/www/demo
+    version: 64d7e82
+  tags: git

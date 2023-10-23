@@ -1,0 +1,21 @@
+---
+- name: Install EPEL Release RPM
+  ansible.builtin.yum:
+    name: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Install packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ web_rpm_packages }}"
+  when: ansible_os_family == 'RedHat'
+
+- name: Install CPAN Packages
+  community.general.cpanm:
+    name: "{{ item }}"
+    mode: new
+  loop: "{{ web_cpan_packages }}"
+  when: ansible_os_family == 'RedHat'
+  tags: cpan
