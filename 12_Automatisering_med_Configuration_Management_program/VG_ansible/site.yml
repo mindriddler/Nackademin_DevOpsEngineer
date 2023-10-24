@@ -2,9 +2,11 @@
 - name: Playbook for installing and configuring a database server
   hosts: dbservers
   roles:
+    - common
     - db
 
 - name: Playbook for installing and configuring a web server
   hosts: webservers
   roles:
+    - common
     - web
