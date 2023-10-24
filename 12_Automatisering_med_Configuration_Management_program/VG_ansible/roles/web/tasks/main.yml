@@ -23,8 +23,8 @@
     dest: "{{ item.value.dest }}"
     owner: "{{ item.value.owner | default(web_template.common.owner) }}"
     group: "{{ item.value.group | default(web_template.common.group) }}"
-    mode: "{{ web_template.mode }}"
-  loop: "{{ web_template.common.files | dict2items }}"
+    mode: "{{ web_template.common.mode }}"
+  loop: "{{ web_template.files | dict2items }}"
   loop_control:
     label: "{{ item.key }}: {{ item.value.src }} to {{ item.value.dest }}"
   tags: move_files
