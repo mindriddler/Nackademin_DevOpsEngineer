@@ -17,7 +17,7 @@
   ansible.builtin.import_tasks: service.yml
   tags: service
 
-- name: Create database "webappzodb"
+- name: Create database "webappdb"
   community.mysql.mysql_db:
     name: webappdb
     state: present

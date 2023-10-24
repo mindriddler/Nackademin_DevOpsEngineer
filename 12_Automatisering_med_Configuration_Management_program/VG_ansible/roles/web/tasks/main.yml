@@ -2,9 +2,9 @@
   ansible.builtin.import_tasks: packages.yml
   tags: packages
 
-- name: Import tasks from service.yml to start httpd
-  ansible.builtin.import_tasks: service.yml
-  tags: service
+- name: Install python packages needed for httpd_can_network_connect
+  ansible.builtin.import_tasks: python_packages.yml
+  tags: python_packages
 
 - name: Create folder for webapp
   ansible.builtin.file:
@@ -17,39 +17,15 @@
 - name: Flusing handlers to clone git repo if notified
   ansible.builtin.meta: flush_handlers
 
-- name: Move webapp_vhost.conf to remote using template
-  ansible.builtin.template:
-    src: "webapp_vhost.conf.j2"
-    dest: "/etc/httpd/conf.d/webapp_vhost.conf"
-    owner: "apache"
-    group: "apache"
-    mode: "644"
-  tags: move_files
-  notify: Restart httpd
+- name: Copy files to remote
+  ansible.builtin.import_tasks: copy_files.yml
+  
+- name: Move templates to remote
+  ansible.builtin.import_tasks: template.yml
 
-
-- name: Move production.yml to remote using template
-  ansible.builtin.template:
-    src: "production.yml.j2"
-    dest: "/var/www/demo/environments/production.yml"
-    owner: "apache"
-    group: "apache"
-    mode: "644"
-  tags: move_files
-
-- name: Move demod.service to remote using template
-  ansible.builtin.template:
-    src: "demod.service.j2"
-    dest: "/etc/systemd/system/demod.service"
-    owner: "root"
-    group: "root"
-    mode: "644"
-  tags: move_files
-  notify: Restart demod
-
-- name: Install python packages needed for httpd_can_network_connect
-  ansible.builtin.import_tasks: python_packages.yml
-  tags: python_packages
+- name: Import tasks from service.yml to start httpd and demod
+  ansible.builtin.import_tasks: service.yml
+  tags: service
 
 - name: Set httpd_can_network_connect flag on and keep it persistent across reboots
   ansible.posix.seboolean:

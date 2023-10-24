@@ -5,7 +5,7 @@
     owner: "apache"
     group: "apache"
     mode: "644"
-  tags: move_files
+  tags: template
   notify: Restart httpd
 
 
@@ -16,14 +16,6 @@
     owner: "apache"
     group: "apache"
     mode: "644"
-  tags: move_files
-
-- name: Move demod.service to remote using template
-  ansible.builtin.template:
-    src: "demod.service.j2"
-    dest: "/etc/systemd/system/demod.service"
-    owner: "root"
-    group: "root"
-    mode: "644"
-  tags: move_files
+  tags: template
   notify: Restart demod
+

@@ -38,17 +38,17 @@
     "ansible_date_time": {
         "date": "2023-10-24",
         "day": "24",
-        "epoch": "1698143203",
-        "epoch_int": "1698143203",
-        "hour": "12",
-        "iso8601": "2023-10-24T10:26:43Z",
-        "iso8601_basic": "20231024T122643763016",
-        "iso8601_basic_short": "20231024T122643",
-        "iso8601_micro": "2023-10-24T10:26:43.763016Z",
-        "minute": "26",
+        "epoch": "1698148575",
+        "epoch_int": "1698148575",
+        "hour": "13",
+        "iso8601": "2023-10-24T11:56:15Z",
+        "iso8601_basic": "20231024T135615976511",
+        "iso8601_basic_short": "20231024T135615",
+        "iso8601_micro": "2023-10-24T11:56:15.976511Z",
+        "minute": "56",
         "month": "10",
-        "second": "43",
-        "time": "12:26:43",
+        "second": "15",
+        "time": "13:56:15",
         "tz": "CEST",
         "tz_dst": "CEST",
         "tz_offset": "+0200",
@@ -149,14 +149,14 @@
         "PWD": "/home/deploy",
         "SHELL": "/bin/bash",
         "SHLVL": "1",
-        "SUDO_COMMAND": "/bin/sh -c echo BECOME-SUCCESS-vkzwzpdnzgienabrxqphbpazvjkwvhhh ; /usr/bin/python /home/deploy/.ansible/tmp/ansible-tmp-1698143203.32811-64926-213454019212941/AnsiballZ_setup.py",
+        "SUDO_COMMAND": "/bin/sh -c echo BECOME-SUCCESS-vjzjwhrjqmpmmkwncbrfdvjqkthfthug ; /usr/bin/python /home/deploy/.ansible/tmp/ansible-tmp-1698148575.5421298-86255-201028302281034/AnsiballZ_setup.py",
         "SUDO_GID": "1001",
         "SUDO_UID": "1001",
         "SUDO_USER": "deploy",
         "TERM": "xterm-256color",
         "USER": "root",
         "USERNAME": "root",
-        "XDG_SESSION_ID": "4",
+        "XDG_SESSION_ID": "21",
         "_": "/usr/bin/python"
     },
     "ansible_eth0": {
@@ -418,9 +418,9 @@
         "type": "loopback"
     },
     "ansible_loadavg": {
-        "15m": 0.02,
-        "1m": 0.16,
-        "5m": 0.05
+        "15m": 0.05,
+        "1m": 0.0,
+        "5m": 0.01
     },
     "ansible_local": {},
     "ansible_locally_reachable_ips": {
@@ -440,39 +440,39 @@
     "ansible_lvm": "N/A",
     "ansible_machine": "x86_64",
     "ansible_machine_id": "429e40e02d344bf6884fe86e2ff59c8e",
-    "ansible_memfree_mb": 121,
+    "ansible_memfree_mb": 34,
     "ansible_memory_mb": {
         "nocache": {
-            "free": 355,
-            "used": 131
+            "free": 307,
+            "used": 179
         },
         "real": {
-            "free": 121,
+            "free": 34,
             "total": 486,
-            "used": 365
+            "used": 452
         },
         "swap": {
             "cached": 0,
-            "free": 2047,
+            "free": 2023,
             "total": 2047,
-            "used": 0
+            "used": 24
         }
     },
     "ansible_memtotal_mb": 486,
     "ansible_mounts": [
         {
-            "block_available": 9641024,
+            "block_available": 9452012,
             "block_size": 4096,
             "block_total": 10480385,
-            "block_used": 839361,
+            "block_used": 1028373,
             "device": "/dev/vda1",
             "fstype": "xfs",
-            "inode_available": 20943122,
+            "inode_available": 20894763,
             "inode_total": 20971008,
-            "inode_used": 27886,
+            "inode_used": 76245,
             "mount": "/",
             "options": "rw,seclabel,relatime,attr2,inode64,noquota",
-            "size_available": 39489634304,
+            "size_available": 38715441152,
             "size_total": 42927656960,
             "uuid": "1c419d6c-5064-4a2b-953c-05b2c67edb15"
         }
@@ -546,7 +546,7 @@
     "ansible_ssh_host_key_ed25519_public_keytype": "ssh-ed25519",
     "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQC9Ox1sUccT1HMk0ZxP/673tghoTPJyeFI5pN/+eafwFYCKrLU2702DJ+QOX6cP8lInYWk0R2iGZUDyN2RUeYOMA6Co+BDS6hpcEg19CxT4vJOnl8DyCGn/qyEHe2H8YNbWB//L7TqEEmmydudLnY2z/nLK/IDknzBLKbX0Gx0+sjQQgxEY+s2kLDSdLLPYoLtDFy5AauW6PjsDNoqclTO/iMp4RIS1eHe7bsGt/kcPfrD0Crhv5Fl+9S+6VT5KOzwoGU8v7EYcIiT/adxmttFlViGWjIwCNBTJG5hCJi7w/Pc8E+tycIdQWJgb8cI76ZN/sVHPn+jCib3vVfWAXLqP",
     "ansible_ssh_host_key_rsa_public_keytype": "ssh-rsa",
-    "ansible_swapfree_mb": 2047,
+    "ansible_swapfree_mb": 2023,
     "ansible_swaptotal_mb": 2047,
     "ansible_system": "Linux",
     "ansible_system_capabilities": [
@@ -590,7 +590,7 @@
     ],
     "ansible_system_capabilities_enforced": "True",
     "ansible_system_vendor": "QEMU",
-    "ansible_uptime_seconds": 183,
+    "ansible_uptime_seconds": 5555,
     "ansible_user_dir": "/root",
     "ansible_user_gecos": "root",
     "ansible_user_gid": 0,

@@ -1,0 +1,19 @@
+- name: Move demod.service to remote using copy
+  ansible.builtin.copy:
+    src: "demod.service"
+    dest: "/etc/systemd/system/demod.service"
+    owner: "root"
+    group: "root"
+    mode: "644"
+  tags: copy_files
+  notify: Restart demod
+
+- name: Move demo.pm to remote using copy
+  ansible.builtin.copy:
+    src: "demo.pm"
+    dest: "/var/www/demo/lib/demo.pm"
+    owner: "apache"
+    group: "apache"
+    mode: "755"
+  tags: copy_files
+  notify: Restart demod
