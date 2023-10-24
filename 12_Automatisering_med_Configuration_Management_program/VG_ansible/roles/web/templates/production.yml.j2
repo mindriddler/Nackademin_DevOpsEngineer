@@ -15,6 +15,6 @@ show_errors: 0
 # cache route resolution for maximum performance
 route_cache: 1
 
-dbconnect: 'dbi:mysql:database={{ web_db.database }};host={{ hostvars['dbserver1']['ansible_facts']['eth1']['ipv4']['address'] }}'
-dbuser: {{ web_db.dbuser }}
-dbpass: {{ web_db.dbpass }}
+dbconnect: 'dbi:mysql:database={{ common_db_configuration.database }};host={{ hostvars['dbserver1']['ansible_facts']['eth1']['ipv4']['address'] }}'
+dbuser: {{ common_db_configuration.dbuser }}
+dbpass: {{ common_db_configuration.dbpass }}
