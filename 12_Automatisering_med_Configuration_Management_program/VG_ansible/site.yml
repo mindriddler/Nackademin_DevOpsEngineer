@@ -7,6 +7,7 @@
 
 - name: Playbook for installing and configuring a web server
   hosts: webservers
+  gather_facts: false
   roles:
     - common
     - web

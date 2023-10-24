@@ -1,3 +1,4 @@
+---
 web_rpm_packages:
   - "@Development tools"
   - perl
@@ -15,21 +16,3 @@ web_cpan_packages:
 web_python_packages:
   - libselinux-python
   - libsemanage-python
-
-web_template:
-  common:
-    owner: "apache"
-    group: "apache"
-    mode: "644"
-  files:
-    vhost:
-      src: "my_vhost.conf.j2"
-      dest: "/etc/httpd/conf.d/my_vhost.conf"
-    producton:
-      src: "production.yml.j2"
-      dest: "/var/www/demo/environments/production.yml"
-    service:
-      src: "demod.service.j2"
-      dest: "/etc/systemd/system/demod.service"
-      owner: "root"
-      group: "root"

@@ -1,0 +1,29 @@
+- name: Move webapp_vhost.conf to remote using template
+  ansible.builtin.template:
+    src: "webapp_vhost.conf.j2"
+    dest: "/etc/httpd/conf.d/webapp_vhost.conf"
+    owner: "apache"
+    group: "apache"
+    mode: "644"
+  tags: move_files
+  notify: Restart httpd
+
+
+- name: Move production.yml to remote using template
+  ansible.builtin.template:
+    src: "production.yml.j2"
+    dest: "/var/www/demo/environments/production.yml"
+    owner: "apache"
+    group: "apache"
+    mode: "644"
+  tags: move_files
+
+- name: Move demod.service to remote using template
+  ansible.builtin.template:
+    src: "demod.service.j2"
+    dest: "/etc/systemd/system/demod.service"
+    owner: "root"
+    group: "root"
+    mode: "644"
+  tags: move_files
+  notify: Restart demod

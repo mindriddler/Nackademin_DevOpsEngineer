@@ -1,8 +1,14 @@
----
 - name: Restart httpd
   ansible.builtin.service:
     name: httpd
     state: restarted
+  tags: restart_service
+
+- name: Restart demod
+  ansible.builtin.service:
+    name: demod
+    state: restarted
+  tags: restart_service
 
 - name: Clone git repo for webapp
   ansible.builtin.git:

@@ -1,14 +1,14 @@
 [webb]
-172.28.128.88 # Hemma
-#172.28.128.64 # Laptop
+#172.28.128.88 # Desktop
+172.28.128.81 # Laptop
 
 [databas]
-172.28.128.15 # Hemma
-#172.28.128.23 # Laptop
+#172.28.128.15 # Desktop
+172.28.128.119 # Laptop
 
 [almalinux]
-172.28.128.176 # Desktop
-#172.28.128.133 # Laptop
+#172.28.128.176 # Desktop
+172.28.128.251 # Laptop
 
 [all:vars]
 ansible_user=deploy
