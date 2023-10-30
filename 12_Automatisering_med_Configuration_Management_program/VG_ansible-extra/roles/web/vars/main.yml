@@ -1,0 +1,18 @@
+---
+web_rpm_packages:
+  - "@Development tools"
+  - perl
+  - "perl-App*"
+  - "perl-DBD*"
+  - "perl-Template*"
+  - "perl-YAML*"
+  - "perl-Capture-Tiny*"
+  - git
+  - httpd
+
+web_cpan_packages:
+  - Dancer
+
+web_python_packages:
+  - libselinux-python
+  - libsemanage-python

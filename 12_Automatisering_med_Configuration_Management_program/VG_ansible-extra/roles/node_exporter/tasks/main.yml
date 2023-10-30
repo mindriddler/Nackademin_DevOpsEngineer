@@ -1,0 +1,38 @@
+- name: Ensure node_exporter user exists
+  ansible.builtin.user:
+    name: node_exporter
+    shell: /sbin/nologin
+    state: present
+
+- name: Copy unit files to /etc/systemd/system
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/
+    owner: node_exporter
+    group: node_exporter
+    mode: "644"
+  with_fileglob:
+  - files/*.service
+  - files/*.socket
+  notify:
+  - Enable and start node_exporter
+
+- name: Copy sysconfig sample file for node_exporter
+  ansible.builtin.copy:
+    src: files/node_exporter
+    dest: /etc/sysconfig/node_exporter
+    owner: node_exporter
+    group: node_exporter
+    mode: "644"
+  notify:
+  - Enable and start node_exporter
+
+- name: Ensure /var/lib/node_exporter/textfile_collector directory exists
+  ansible.builtin.file:
+    path: /var/lib/node_exporter/textfile_collector
+    state: directory
+    owner: node_exporter
+    group: node_exporter
+    mode: "755"
+  notify:
+  - Enable and start node_exporter

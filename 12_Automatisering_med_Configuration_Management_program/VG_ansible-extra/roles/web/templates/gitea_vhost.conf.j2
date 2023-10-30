@@ -1,0 +1,7 @@
+<VirtualHost {{ ansible_eth1.ipv4.address }}:80>
+
+    ProxyPreserveHost On
+    ProxyRequests off
+    AllowEncodedSlashes NoDecode
+    ProxyPass / http://localhost:3000/ nocanon
+</VirtualHost>

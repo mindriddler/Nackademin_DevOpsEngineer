@@ -1,0 +1,28 @@
+---
+- name: Setup Prometheus Docker Container
+  hosts: localhost
+  become: true
+  roles:
+    - gather_facts
+    - localhost
+
+- name: Playbook for installing and configuring a database server
+  hosts: dbservers
+  gather_facts: false
+  roles:
+    - firewall
+    - common
+    - node_exporter
+    - db
+    - cis
+
+- name: Playbook for installing and configuring a web server
+  hosts: webservers
+  gather_facts: false
+  roles:
+    - firewall
+    - common
+    - node_exporter
+    - web
+    - gitea
+    - cis

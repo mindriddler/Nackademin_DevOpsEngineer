@@ -1,0 +1,6 @@
+- name: Start and enable mariadb-server
+  ansible.builtin.service:
+    enabled: true
+    name: mariadb
+    state: started
+  tags: start_mariadb

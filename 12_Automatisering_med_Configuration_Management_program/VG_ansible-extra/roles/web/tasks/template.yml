@@ -1,0 +1,29 @@
+- name: Move webapp_vhost.conf to remote using template
+  ansible.builtin.template:
+    src: "webapp_vhost.conf.j2"
+    dest: "/etc/httpd/conf.d/webapp_vhost.conf"
+    owner: "apache"
+    group: "apache"
+    mode: "644"
+  tags: template
+  notify: Restart httpd
+
+- name: Move gitea_vhost.conf to remote using template
+  ansible.builtin.template:
+    src: "gitea_vhost.conf.j2"
+    dest: "/etc/httpd/conf.d/gitea_vhost.conf"
+    owner: "apache"
+    group: "apache"
+    mode: "644"
+  tags: template
+  notify: Restart httpd
+
+- name: Move production.yml to remote using template
+  ansible.builtin.template:
+    src: "production.yml.j2"
+    dest: "/var/www/demo/environments/production.yml"
+    owner: "apache"
+    group: "apache"
+    mode: "644"
+  tags: template
+  notify: Restart demod

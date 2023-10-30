@@ -1,0 +1,75 @@
+- name: Assert telnet check
+  ansible.builtin.assert:
+    that:
+      - telnet_check.stdout == "package telnet is not installed"
+    fail_msg: "Telnet is installed and not compliant with CIS benchmark"
+    success_msg: "Telnet is not installed and compliant with CIS benchmark"
+
+- name: Assert telnet-server check
+  ansible.builtin.assert:
+    that:
+      - telnet_server_check.stdout == "package telnet-server is not installed"
+    fail_msg: "Telnet-server is installed and not compliant with CIS benchmark"
+    success_msg: "Telnet-server is not installed and compliant with CIS benchmark"
+
+- name: Assert cron daemon check
+  ansible.builtin.assert:
+    that:
+      - crond_check.enabled == true
+    fail_msg: "Cron daemon is not enabled and not compliant with CIS benchmark"
+    success_msg: "Cron daemon is enabled and compliant with CIS benchmark"
+
+- name: Assert /etc/crontab permissions
+  ansible.builtin.assert:
+    that:
+      - crontab_stat.stat.mode == '0600'
+    fail_msg: "/etc/crontab permissions are not compliant with CIS benchmark (expected: '0600', got: '{{ crontab_stat.stat.mode }}')"
+    success_msg: "/etc/crontab permissions are compliant with CIS benchmark"
+  failed_when: false
+
+- name: Assert /etc/passwd permissions
+  ansible.builtin.assert:
+    that:
+      - passwd_stat.stat.mode == '0644'
+    fail_msg: "/etc/passwd permissions are not compliant with CIS benchmark (expected: '0644', got: '{{ passwd_stat.stat.mode }}')"
+    success_msg: "/etc/passwd permissions are compliant with CIS benchmark"
+
+- name: Assert /etc/passwd- permissions
+  ansible.builtin.assert:
+    that:
+      - passwd_dash_stat.stat.mode == '0600'
+    fail_msg: "/etc/passwd- permissions are not compliant with CIS benchmark (expected: '0600', got: '{{ passwd_dash_stat.stat.mode }}')"
+    success_msg: "/etc/passwd- permissions are compliant with CIS benchmark"
+  failed_when: false
+
+- name: Assert /etc/shadow permissions
+  ansible.builtin.assert:
+    that:
+      - shadow_stat.stat.mode == '0000'
+    fail_msg: "/etc/shadow permissions are not compliant with CIS benchmark (expected: '0000', got: '{{ shadow_stat.stat.mode }}')"
+    success_msg: "/etc/shadow permissions are compliant with CIS benchmark"
+  failed_when: false
+
+- name: Assert /etc/group permissions
+  ansible.builtin.assert:
+    that:
+      - group_stat.stat.mode == '0644'
+    fail_msg: "/etc/group permissions are not compliant with CIS benchmark (expected: '0644', got: '{{ group_stat.stat.mode }}')"
+    success_msg: "/etc/group permissions are compliant with CIS benchmark"
+  failed_when: false
+
+- name: Assert /etc/gshadow permissions
+  ansible.builtin.assert:
+    that:
+      - gshadow_stat.stat.mode == '0000'
+    fail_msg: "/etc/gshadow permissions are not compliant with CIS benchmark (expected: '0000', got: '{{ gshadow_stat.stat.mode }}')"
+    success_msg: "/etc/gshadow permissions are compliant with CIS benchmark"
+  failed_when: false
+
+- name: Assert /etc/cron.hourly permissions
+  ansible.builtin.assert:
+    that:
+      - cron_hourly_stat.stat.mode == '0700'
+    fail_msg: "/etc/cron.hourly permissions are not compliant with CIS benchmark (expected: '0700', got: '{{ cron_hourly_stat.stat.mode }}')"
+    success_msg: "/etc/cron.hourly permissions are compliant with CIS benchmark"
+  failed_when: false

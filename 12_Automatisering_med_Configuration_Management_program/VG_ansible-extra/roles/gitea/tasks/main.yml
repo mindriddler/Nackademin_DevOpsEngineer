@@ -1,0 +1,82 @@
+---
+- name: Download Gitea binary
+  ansible.builtin.get_url:
+    url: "https://dl.gitea.com/gitea/1.20.5/gitea-1.20.5-linux-amd64"
+    dest: "/usr/local/bin/gitea"
+    mode: "755"
+  tags: gitea
+
+- name: Ensure group git exists
+  ansible.builtin.group:
+    name: git
+    system: true
+  tags: gitea
+
+- name: Ensure user git exists
+  ansible.builtin.user:
+    name: git
+    group: git
+    system: true
+    shell: /bin/bash
+    comment: 'Git Version Control'
+    home: /home/git
+    create_home: true
+  tags: gitea
+
+- name: Create necessary directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "750"
+    owner: "git"
+    group: "git"
+  loop:
+    - "/var/lib/gitea/custom"
+    - "/var/lib/gitea/data"
+    - "/var/lib/gitea/log"
+    - "/etc/gitea"
+
+- name: Set ownership and permissions for /var/lib/gitea
+  ansible.builtin.file:
+    path: "/var/lib/gitea"
+    state: directory
+    recurse: true
+    owner: "git"
+    group: "git"
+    mode: "750"
+
+- name: Set initial permissions for /etc/gitea
+  ansible.builtin.file:
+    path: "/etc/gitea"
+    mode: "750"
+
+- name: Check if /etc/gitea/app.ini exists
+  ansible.builtin.stat:
+    path: "/etc/gitea/app.ini"
+  register: app_ini_stat
+
+- name: Set initial permissions for /etc/gitea/app.ini (if it exists)
+  ansible.builtin.file:
+    path: "/etc/gitea/app.ini"
+    mode: "0640"
+  when: app_ini_stat.stat.exists
+
+
+- name: Copy Gitea systemd service file
+  ansible.builtin.copy:
+    src: gitea.service
+    dest: /etc/systemd/system/gitea.service
+    owner: root
+    group: root
+    mode: "644"
+  notify: Reload systemd
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable and start Gitea service
+  ansible.builtin.systemd:
+    name: gitea
+    enabled: true
+    state: started
+  failed_when: false

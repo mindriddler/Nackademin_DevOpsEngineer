@@ -1,0 +1,7 @@
+- name: Configure Firewall
+  ansible.builtin.include_role:
+    name: geerlingguy.firewall
+  vars:
+    firewall_allowed_tcp_ports: "{{ all_allowed_tcp_ports }}"
+    firewall_additional_rules:
+      - "iptables -A INPUT -p tcp --dport 3306 -s {{ db_server_allowed_ip }} -j ACCEPT"

@@ -1,0 +1,20 @@
+# configuration file for production environment
+
+# only log warning and error messages
+log: "warning"
+
+# log message to a file in logs/
+logger: "file"
+
+# don't consider warnings critical
+warnings: 0
+
+# hide errors 
+show_errors: 0
+
+# cache route resolution for maximum performance
+route_cache: 1
+
+dbconnect: 'dbi:mysql:database={{ common_db_configuration.database }};host={{ hostvars['dbserver1']['ansible_facts']['eth1']['ipv4']['address'] }}'
+dbuser: {{ common_db_configuration.dbuser }}
+dbpass: {{ common_db_configuration.dbpass }}

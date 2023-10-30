@@ -1,0 +1,66 @@
+---
+- name: Check for telnet
+  ansible.builtin.command:
+    cmd: rpm -q telnet
+  register: telnet_check
+  failed_when: false
+
+- name: Check for telnet-server
+  ansible.builtin.command:
+    cmd: rpm -q telnet-server
+  register: telnet_server_check
+  failed_when: false
+
+- name: Check cron daemon
+  ansible.builtin.systemd:
+    name: crond
+    enabled: true
+  check_mode: true
+  register: crond_check
+  failed_when: false
+
+- name: Check /etc/crontab permissions
+  ansible.builtin.stat:
+    path: /etc/crontab
+  register: crontab_stat
+  failed_when: false
+
+- name: Check /etc/passwd permissions
+  ansible.builtin.stat:
+    path: /etc/passwd
+  register: passwd_stat
+  failed_when: false
+
+- name: Check /etc/passwd- permissions
+  ansible.builtin.stat:
+    path: /etc/passwd-
+  register: passwd_dash_stat
+  failed_when: false
+
+- name: Check /etc/shadow permissions
+  ansible.builtin.stat:
+    path: /etc/shadow
+  register: shadow_stat
+  failed_when: false
+
+- name: Check /etc/group permissions
+  ansible.builtin.stat:
+    path: /etc/group
+  register: group_stat
+  failed_when: false
+
+- name: Check /etc/gshadow permissions
+  ansible.builtin.stat:
+    path: /etc/gshadow
+  register: gshadow_stat
+  failed_when: false
+
+- name: Check /etc/cron.hourly permissions
+  ansible.builtin.stat:
+    path: /etc/cron.hourly
+  register: cron_hourly_stat
+  failed_when: false
+
+- name: Assert all checks
+  ansible.builtin.include_tasks:
+    asserts.yml

@@ -1,0 +1,17 @@
+localhost_prometheus_config:
+  scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 5s
+    static_configs:
+    - targets: ['localhost:9090']
+  - job_name: 'node'
+    static_configs:
+    - targets:
+      - "{{ hostvars['localhost']['ansible_facts']['docker0']['ipv4']['address'] }}:9100"
+      - "{{ hostvars['webserver1']['ansible_facts']['eth1']['ipv4']['address'] }}:9100"
+      - "{{ hostvars['dbserver1']['ansible_facts']['eth1']['ipv4']['address'] }}:9100"
+    relabel_configs:
+    - source_labels: [__address__]
+      regex: "{{ hostvars['localhost']['ansible_facts']['docker0']['ipv4']['address'] }}:9100"
+      target_label: instance
+      replacement: 'controller'

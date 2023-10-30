@@ -1,0 +1,6 @@
+- name: Gather facts for all hosts
+  ansible.builtin.setup:
+  loop: "{{ groups['all'] }}"
+  delegate_to: "{{ item }}"
+  delegate_facts: true
+  run_once: true

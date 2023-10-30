@@ -1,0 +1,35 @@
+- name: Check communication between web and db servers
+  ansible.builtin.import_tasks: check_communication.yml
+  tags: check_communication
+
+- name: Install yum and cpan packages
+  ansible.builtin.import_tasks: packages.yml
+  tags: packages
+
+- name: Create folder for webapp
+  ansible.builtin.file:
+    path: /var/www/demo
+    state: directory
+    mode: "755"
+  tags: create_webapp_folder
+  notify: Clone git repo for webapp
+
+- name: Flusing handlers to clone git repo if notified
+  ansible.builtin.meta: flush_handlers
+
+- name: Copy files to remote
+  ansible.builtin.import_tasks: copy_files.yml
+
+- name: Move templates to remote
+  ansible.builtin.import_tasks: template.yml
+
+- name: Import tasks from service.yml to start httpd and demod
+  ansible.builtin.import_tasks: service.yml
+  tags: service
+
+- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+  ansible.posix.seboolean:
+    name: httpd_can_network_connect
+    state: true
+    persistent: true
+  tags: httpd_can_network_connect

@@ -1,0 +1,37 @@
+- name: Install mariadb-server and MySQL-python
+  ansible.builtin.import_tasks: packages.yml
+  tags: packages
+
+- name: Start and enable mariadb
+  ansible.builtin.import_tasks: service.yml
+  tags: service
+
+- name: Create database "webappdb"
+  community.mysql.mysql_db:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - webappdb
+    - giteadb
+  tags: db
+
+# Incase i have multiple webserver, i need to create a user for each webserver, so i use the loop module
+# I use the when condition to make sure that the task is only executed on the dbserver1 host
+- name: Create user "web-app"
+  community.mysql.mysql_user:
+    name: web-app
+    password: "{{ common_db_configuration.dbpass }}"
+    priv: "webappdb.*:ALL,GRANT"
+    host: "{{ hostvars[item]['ansible_facts']['eth1']['ipv4']['address'] }}"
+    state: present
+  loop: "{{ groups['webservers'] }}"
+  when: inventory_hostname == 'dbserver1'
+  tags: db
+
+- name: Create user "gitea"
+  community.mysql.mysql_user:
+    name: gitea
+    password: "{{ common_db_configuration.dbpass }}"
+    priv: "giteadb.*:ALL,GRANT"
+    state: present
+  tags: db

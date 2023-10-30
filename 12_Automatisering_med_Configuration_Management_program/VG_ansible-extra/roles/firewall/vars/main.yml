@@ -1,0 +1,19 @@
+web_server_allowed_tcp_ports:
+- "90" # HTTP
+- "443" # HTTPS
+- "80" # gitea
+
+db_server_allowed_tcp_ports:
+- "3306" # MySQL
+
+common_allowed_tcp_ports:
+- "22" # SSH for Ansible
+
+prometheus_allowed_tcp_ports:
+- "9090" # Prometheus
+- "9100"
+
+# Combine all the allowed ports into one variable for easier use in tasks
+all_allowed_tcp_ports: "{{ web_server_allowed_tcp_ports + db_server_allowed_tcp_ports + common_allowed_tcp_ports + prometheus_allowed_tcp_ports }}"
+
+db_server_allowed_ip: "172.0.0.0/24" # Replace with your network or specific IP

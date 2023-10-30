@@ -1,0 +1,13 @@
+- name: Start and enable httpd
+  ansible.builtin.service:
+    enabled: true
+    name: httpd
+    state: started
+  tags: service
+
+- name: Enable demod.service
+  ansible.builtin.service:
+    enabled: true
+    name: demod.service
+    state: started
+  tags: service

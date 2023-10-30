@@ -1,0 +1,23 @@
+- name: Install EPEL Release RPM
+  ansible.builtin.yum:
+    name: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+
+- name: Install packages
+  ansible.builtin.yum:
+    name: "{{ web_rpm_packages }}"
+    state: present
+  tags: rpm
+
+- name: Install CPAN Packages
+  community.general.cpanm:
+    name: "{{ item }}"
+    mode: new
+  loop: "{{ web_cpan_packages }}"
+  tags: cpan
+
+- name: Install python packages
+  ansible.builtin.yum:
+    name: "{{ web_python_packages }}"
+    state: present
+  tags: python

@@ -1,0 +1,8 @@
+- name: Check DB port accessibility from Web Server
+  ansible.builtin.wait_for:
+    host: "{{ hostvars[item]['ansible_host'] }}"
+    port: 3306
+    timeout: 5 # Increase if needed
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['dbservers'] }}"
+  run_once: true

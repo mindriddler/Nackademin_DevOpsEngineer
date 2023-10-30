@@ -1,0 +1,61 @@
+- name: Write Prometheus config
+  ansible.builtin.copy:
+    content: "{{ localhost_prometheus_config }}"
+    dest: /tmp/scrape-config.yml
+    owner: root
+    group: root
+    mode: "644"
+  notify: Stop docker containers
+
+- name: Flusing handlers to clone git repo if notified
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure Node Exporter container is running
+  community.docker.docker_container:
+    name: node-exporter
+    image: prom/node-exporter
+    network_mode: host
+
+- name: Ensure Prometheus container is running
+  community.docker.docker_container:
+    name: prometheus
+    image: prom/prometheus
+    volumes:
+      - "/tmp/scrape-config.yml:/etc/prometheus/prometheus.yml"
+      - "prometheus_data:/data"
+    ports:
+      - "9090:9090"
+    network_mode: host
+
+- name: Get the latest release from GitHub
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/prometheus/node_exporter/releases/latest"
+    return_content: true
+  register: latest_release
+
+- name: Get the download URL for the latest Linux amd64 release
+  ansible.builtin.set_fact:
+    node_exporter_download_url: "{{ item.browser_download_url }}"
+  loop: "{{ latest_release.json.assets }}"
+  when: item.name is search('linux-amd64')
+
+- name: Extract the Node Exporter tarball
+  ansible.builtin.unarchive:
+    src: "{{ node_exporter_download_url }}"
+    dest: "{{ role_path }}/files"
+    remote_src: true
+    owner: root
+    group: root
+    mode: "755"
+
+- name: Copy Node Exporter binary to /usr/local/bin
+  ansible.builtin.copy:
+    src: "node_exporter-{{ latest_release.json.tag_name | replace('v', '') }}.linux-amd64/node_exporter"
+    dest: /usr/sbin/node_exporter
+    owner: root
+    group: root
+    mode: "755"
+  loop: "{{ groups['webservers'] + groups['dbservers'] }}"
+  loop_control:
+    label: "{{ item }}"
+  delegate_to: "{{ item }}"
