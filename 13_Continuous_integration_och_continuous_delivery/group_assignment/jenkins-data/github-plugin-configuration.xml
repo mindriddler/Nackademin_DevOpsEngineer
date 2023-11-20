@@ -1,0 +1,17 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<github-plugin-configuration plugin="github@1.37.3.1">
+  <configs>
+    <github-server-config>
+      <name>github</name>
+      <apiUrl>https://api.github.com</apiUrl>
+      <manageHooks>true</manageHooks>
+      <credentialsId>59ada50e-0e40-46fa-a5e4-c93b62a12335</credentialsId>
+      <clientCacheSize>20</clientCacheSize>
+    </github-server-config>
+  </configs>
+  <hookSecretConfigs>
+    <org.jenkinsci.plugins.github.config.HookSecretConfig>
+      <credentialsId>59ada50e-0e40-46fa-a5e4-c93b62a12335</credentialsId>
+    </org.jenkinsci.plugins.github.config.HookSecretConfig>
+  </hookSecretConfigs>
+</github-plugin-configuration>
