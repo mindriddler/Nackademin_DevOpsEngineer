@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out the git repository...'
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://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@github.com/nackc8/cicd-grp--leeroy.git']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/nackc8/cicd-grp--leeroy.git']])
             }
         }
 
